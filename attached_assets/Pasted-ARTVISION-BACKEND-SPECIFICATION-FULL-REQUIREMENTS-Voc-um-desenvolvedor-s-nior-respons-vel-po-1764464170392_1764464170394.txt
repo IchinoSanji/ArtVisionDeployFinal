@@ -1,0 +1,236 @@
+ARTVISION – BACKEND SPECIFICATION (FULL REQUIREMENTS)
+
+Você é um desenvolvedor sênior responsável por criar todo o backend do sistema ArtVision, um projeto que analisa imagens de obras de arte usando Inteligência Artificial.
+
+Desenvolva um backend completo, limpo, modular, documentado e pronto para produção.
+
+👇 🔥 Sobre o Projeto
+
+O ArtVision é um sistema que deve:
+
+Receber imagens enviadas pelo usuário (upload via API).
+
+Executar análise de imagem usando modelos IA:
+
+classificação por estilo (ex: barroco, surrealismo, renascentista, contemporâneo…)
+
+identificação provável do artista
+
+extração de texto da imagem com OCR (para etiquetas, placas de museu etc.)
+
+Retornar ao usuário:
+
+nome provável da obra
+
+estilo artístico
+
+autor provável
+
+período/época estimada
+
+texto encontrado (OCR)
+
+descrição textual gerada por IA
+
+confiança (%) de cada predição
+
+Registrar logs de uso + histórico das imagens analisadas.
+
+Disponibilizar endpoints REST simples para consumir no front.
+
+🧩 🔥 Stack Técnica Exigida
+
+Crie o projeto usando:
+
+Python 3.11+
+
+Framework: FastAPI (obrigatório)
+
+Banco: PostgreSQL (SQLAlchemy)
+
+Autenticação JWT simples
+
+ORM: SQLAlchemy + Alembic
+
+Processamento de imagem: Pillow ou OpenCV
+
+OCR: Tesseract OCR (pytesseract)
+
+Modelo de visão:
+
+Pode usar TensorFlow/Keras, PyTorch, HuggingFace ou modelos prontos como:
+
+google/vit-base-patch16-224-in21k
+
+resnet50
+
+mobilenetv3
+
+Geração de descrição da obra:
+
+Pode integrar com o modelo local ou OpenAI/HuggingFace (apenas preparar função — deixar chave no .env)
+
+🧱 🔥 Requisitos de Projeto
+
+Implemente:
+
+1. Estrutura de Pastas (obrigatória)
+artvision_backend/
+│── app/
+│   ├── api/
+│   │   ├── v1/
+│   │   │   ├── art.py
+│   │   │   ├── auth.py
+│   │   │   └── users.py
+│   ├── core/
+│   │   ├── config.py
+│   │   ├── security.py
+│   ├── models/
+│   │   ├── user.py
+│   │   └── analysis.py
+│   ├── services/
+│   │   ├── image_service.py
+│   │   ├── ocr_service.py
+│   │   └── ai_classifier.py
+│   ├── db/
+│   │   ├── session.py
+│   │   └── base.py
+│   ├── utils/
+│   │   ├── file_handler.py
+│   ├── main.py
+│── migrations/
+│── requirements.txt
+│── .env.example
+│── README.md
+
+📌 🔥 Modelos do Banco (ORM)
+Users
+
+id
+
+name
+
+email
+
+password_hash
+
+created_at
+
+Analysis
+
+id
+
+user_id (FK)
+
+filename_original
+
+filename_saved
+
+predicted_style
+
+predicted_artist
+
+predicted_period
+
+ocr_text
+
+ai_description
+
+confidence_style
+
+confidence_artist
+
+created_at
+
+📡 🔥 Endpoints REST (FastAPI)
+Auth
+
+POST /auth/register
+
+POST /auth/login
+
+Image Analysis
+
+POST /art/analyze
+
+recebe imagem
+
+roda OCR
+
+roda classificação IA
+
+gera descrição com IA
+
+salva no banco
+
+retorna JSON completo
+
+Listar análises
+
+GET /art/history
+
+GET /art/{id}
+
+🧠 Processamento de IA
+
+Crie funções reais, mesmo que básicas:
+
+Classificação da Obra
+
+carregamento preguiçoso do modelo (lazy load)
+
+pré-processamento da imagem
+
+retorno de:
+
+{
+   "style": "...",
+   "artist": "...",
+   "period": "...",
+   "confidence": 0.92
+}
+
+OCR com Tesseract
+
+Implementar:
+
+import pytesseract
+text = pytesseract.image_to_string(image)
+
+Descrição por IA
+
+Função:
+
+def generate_description(ocr_text, classifications):
+    """
+    Gera um texto descritivo sobre a obra, explicando estilo, contexto histórico e características visuais.
+    Pode usar modelo local, huggingface ou openai.
+    """
+
+📦 🔥 Entregáveis do Código
+
+O backend deve vir com:
+
+Código comentado e limpo
+
+Rotas organizadas
+
+Tratamento de erros
+
+Validação com Pydantic
+
+Upload de imagem com limite de 20MB
+
+Pastas para salvar imagens temporárias
+
+Dockerfile
+
+docker-compose com:
+
+API
+
+PostgreSQL
+
+pgAdmin
+
+README explicando tudo
